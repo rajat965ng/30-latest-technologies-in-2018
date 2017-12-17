@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RouterApp from './RouterApp.jsx';
+import App from './App.jsx';
 
 ReactDOM.render((
-    <RouterApp/>
+    <App/>
 ), document.getElementById('app'))
