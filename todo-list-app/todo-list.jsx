@@ -9,7 +9,8 @@ class TodoList extends React.Component{
         return(<div>
             <table>
                 <TodoListHeader/>
-                <TodoListBody todos={this.props.todos}/>
+                <TodoListBody todos={this.props.todos} toggletask={this.props.toggletask}
+                              savetask={this.props.savetask} deletetask={this.props.deletetask}/>
             </table>
         </div>);
     }

@@ -15,10 +15,10 @@ class CreateTodo extends React.Component{
 
     handleCreate(event){
         event.preventDefault();
-        console.log(this.refs.createInput.value);
-        console.log(this.props.createTask);
-        this.props.createTask(this.refs.createInput.value)
-        this.refs.createInput.value = "";
+        if(this.props.validateTask(this.refs.createInput.value)) {
+            this.props.createTask(this.refs.createInput.value)
+            this.refs.createInput.value = "";
+        }
     }
 
 }
