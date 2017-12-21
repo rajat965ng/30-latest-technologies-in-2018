@@ -2,3 +2,4 @@
 This repository will contain at least 30 latest/new technologies that I'm going to learn in 2018 
 
 1. ReactJs
+2. Scala (core) : 2.12.4
