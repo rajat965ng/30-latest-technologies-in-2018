@@ -1,20 +1,8 @@
 package com.parallel.ctx;
 
-class Account{
-    private Integer amount = 1000;
+import com.parallel.shared.*;
 
-    public void increment(){
-        amount+=2000;
-    }
-    public void decrement(){
-        amount-=1000;
-    }
 
-    public Integer getAmount() {
-        return amount;
-    }
-
-}
 
 class Producer implements Runnable{
     private Account account;
