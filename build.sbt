@@ -11,6 +11,8 @@ lazy val root = (project in file(".")).
     libraryDependencies += scalaTest % Test,
     libraryDependencies += "org.apache.spark" %% "spark-core" % "2.2.1",
     libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.2.1",
-    libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.2.1"
+    libraryDependencies += "org.apache.spark" %% "spark-hive" % "2.2.1",
+    libraryDependencies += "org.apache.spark" %% "spark-streaming" % "2.2.1" % "provided"
+
 
   )

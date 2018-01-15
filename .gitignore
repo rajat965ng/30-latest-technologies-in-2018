@@ -4,3 +4,5 @@ derby.log
 metastore_db/
 spark-warehouse/
 resources/user.parquet/
+resources/data/
+resources/parquet/
