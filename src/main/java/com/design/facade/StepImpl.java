@@ -1,27 +1,33 @@
 package com.design.facade;
 
-public class StepImpl extends GenericFacade {
+public class StepImpl {
 
-    @Override
-    public void moveRight() {
-        System.out.println("Move Right");
+    private IStep rectangle;
+
+    private IStep circle;
+
+    private IStep square;
+
+    public StepImpl() {
+        rectangle = ()->{
+            System.out.println("Drawn Rectangle");
+        };
+        circle = ()->{
+            System.out.println("Drawn Circle");
+        };
+        square = ()->{
+            System.out.println("Drawn Square");
+        };
     }
 
-    @Override
-    public void moveLeft() {
-        System.out.println("Move Left");
-
+    public void drawRectangle(){
+        rectangle.plan();
     }
 
-    @Override
-    public void moveUp() {
-        System.out.println("Move Up");
-
+    public void drawSquare(){
+        square.plan();
     }
-
-    @Override
-    public void moveDown() {
-        System.out.println("Move Down");
-
+    public void drawCircle(){
+        circle.plan();
     }
 }

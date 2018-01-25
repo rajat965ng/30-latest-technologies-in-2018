@@ -3,8 +3,10 @@ package com.design.facade;
 public class FacadeApp {
 
     public static void main(String args[]){
-        IStep iStep = new StepImpl();
-        iStep.plan();
+        StepImpl step = new StepImpl();
+        step.drawCircle();
+        step.drawRectangle();
+        step.drawSquare();
     }
 
 }
