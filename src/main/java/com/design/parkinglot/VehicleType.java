@@ -1,4 +1,4 @@
-package parkinglot;
+package com.design.parkinglot;
 
 public enum VehicleType {
     MOTORCYCLE(1),
