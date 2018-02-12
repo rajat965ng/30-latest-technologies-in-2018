@@ -8,3 +8,4 @@ Purpose: To eliminate the fear of unknown
 3. Parallel Computing (Java 8)
 4. Apache Spark 2.2.1 (for Machine Learning, Graph Processing and Data Streaming) + Hive (Data warehousing for distributing        storage using SQL) using R-Programming and Scala 
 5. Design Patterns (Java)
+6. Java 8 (Latest features)
