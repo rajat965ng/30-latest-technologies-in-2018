@@ -1,0 +1,57 @@
+//for placeholder.html
+.frst_para {
+ color: green;
+}
+.sec_para {
+ @extend .frst_para;
+ font-size:20px;
+}
+//for index.html
+h1{
+  color:#AF80ED;
+}
+h3{
+  color:#DE5E85;
+}
+
+//for multilineselector.html
+.class1,
+.class2{
+ color:red;
+}
+
+//for nestedrule.html
+.container{
+ h1{
+ font-size: 25px;
+ color:#E45456;
+}
+ p{
+ font-size: 25px;
+ color:#3C7949;
+ }
+ //ReferencingParent
+ a {
+ font-size: 20px;
+ &:hover { background-color: yellow; }
+ }
+//nestedProp
+.line {
+ font: {
+ family: Lucida Sans Unicode;
+ size:20px;
+ weight: bold;
+ variant: small-caps;
+ }
+}
+.box{
+ h1{
+ font-size: 25px;
+ color:#E45456;
+ }
+ p{
+ font-size: 25px;
+ color:#3C7949;
+ }
+}
+}
