@@ -10,3 +10,4 @@ Purpose: To eliminate the fear of unknown
 5. Design Patterns (Java)
 6. Java 8 (Latest features)
 7. SASS (Syntactically Awesome StyleSheets)
+8. ES6 (ECMAScript 6)
