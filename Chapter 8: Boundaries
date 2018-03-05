@@ -1,0 +1,16 @@
+Chapter 8: Boundaries
+
+	-- A cleaner way to use Map might look like the following. No user of Sensors would care one bit if generics were used or not. That 
+		choice has become (and always should be) an implementation detail.
+
+		public class Sensors {
+			private Map sensors = new HashMap();
+			public Sensor getById(String id) {
+				return (Sensor) sensors.get(id);
+			}
+			//snip
+		}
+
+		We are not suggesting that every use of Map be encapsulated in this form. Rather, we are advising you not to pass Map s (or any other interface at a boundary) around your system. If you use a boundary interface like Map , keep it inside the class, or close family of classes, where it is used. Avoid returning it from, or accepting it as an argument to, public APIs.
+
+    --    

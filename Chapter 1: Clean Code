@@ -1,0 +1,20 @@
+Chapter 1: Clean Code
+	-- Code represents the details of the requirements. These details cannot be ignored or abstracted; else it has to be specified. Representing the requirements in such details that the machine can execute them is programming. Such specification is called code.
+	
+	-- When you encounter bad code, just say that I'm slogging through a morass of tangled brambles and hidden pitfalls. I'm struggling to find our way, hoping for some hint, some clue, of what's going on. But all I can see is more and more senseless code.
+
+	-- As the mess builds up, the productivity of the team reaches to zero. Due to which management only thinks of increasing the staff to increase productivity. The new staff doesn't know the intent of the existing design of the system. They don't know the difference between the change that matches the design intent and the change that thwarts the design intent. Ultimately everyone comes under the horrific pressure to increase productivity. So, they make even more mess and eventually drive productivity to zero.
+
+	-- If one doesnt care about the broken window of a building then others also stop caring about it. They'll let other windows to get broken. Eventually they actively break them. They despoil the facade with graffiti and allow garbage to collect. One broken window starts the process to decay.
+
+	-- Code, without tests, is not clean. No matter how elegant it is, no matter how readable and acces-sible, if it has no tests, it be unclean
+
+	-- rules of simple code. In priority order, simple code:
+		• Runs all the tests;
+		• Contains no duplication;
+		• Expresses all the design ideas that are in the
+		system;
+		• Minimizes the number of entities such as classes,
+		methods, functions, and the like
+
+

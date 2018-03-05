@@ -1,0 +1,25 @@
+Chapter 7 : Exception Handling
+
+	-- Let’s take a look at an example. Here is some awkward code that sums expenses in a billing application:
+		try {
+		MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());
+		m_total += expenses.getTotal();
+		} catch(MealExpensesNotFound e) {
+		m_total += getMealPerDiem();
+		}
+
+		if meals are expensed, they become part of the total. If they aren’t, the employee gets a meal per diem amount for that day. The exception clutters the logic. Wouldn’t it be better if we didn’t have to deal with the special case? If we didn’t, our code
+		would look much simpler. It would look like this:
+
+		MealExpenses expenses = expenseReportDAO.getMeals(employee.getID());
+		m_total += expenses.getTotal();
+
+		Can we make the code that simple? It turns out that we can. We can change the ExpenseReportDAO so that it always returns a MealExpense object. If there are no meal expenses, it returns a MealExpense object that returns the per diem as its total:
+		
+		public class PerDiemMealExpenses implements MealExpenses {
+		public int getTotal() {
+		// return the per diem default
+		}
+		}
+
+        This is called the S PECIAL C ASE P ATTERN [Fowler]. You create a class or configure an object so that it handles a special case for you. When you do, the client code doesn’t have to deal with exceptional behavior. That behavior is encapsulated in the special case object.

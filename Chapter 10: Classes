@@ -1,0 +1,29 @@
+Chapter 10: Classes
+
+	-- The Single Responsibility Principle (SRP): states that a class or module should have one, and only one, reason to change.
+		Classes should have one responsibility—one reason to change.
+
+		public class SuperDashboard extends JFrame implements MetaDataUser
+			public Component getLastFocusedComponent()
+			public void setLastFocused(Component lastFocused)
+			public int getMajorVersionNumber()
+			public int getMinorVersionNumber()
+			public int getBuildNumber()
+		}
+
+		two reasons to change. 
+		First, it tracks version information that would seemingly need to be updated every time the software gets shipped.
+
+		Second, it manages Java Swing components (it is a derivative of JFrame , the Swing representation of a top-level GUI window).
+
+		We can easily extract all three SuperDashboard methods that deal with version information into a separate class named Version.
+
+		A single-responsibility class
+		public class Version {
+			public int getMajorVersionNumber()
+			public int getMinorVersionNumber()
+			public int getBuildNumber()
+		}
+
+	-- In general we would like cohesion to be high. The more variables a method manipulates the more cohesive that method is to its 
+		class. A class in which each variable is used by each method is maximally cohesive.	
