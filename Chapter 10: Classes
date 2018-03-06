@@ -25,5 +25,83 @@ Chapter 10: Classes
 			public int getBuildNumber()
 		}
 
-	-- In general we would like cohesion to be high. The more variables a method manipulates the more cohesive that method is to its 
-		class. A class in which each variable is used by each method is maximally cohesive.	
+	-- In general we would like cohesion to be high. The more variables a method manipulates the more 
+		cohesive that method is to its class. A class in which each variable is used by each method is maximally cohesive.	
+
+		//Class 1
+		public class PrimePrinter {
+			public static void main(String[] args) {
+				final int NUMBER_OF_PRIMES = 1000;
+				int[] primes = PrimeGenerator.generate(NUMBER_OF_PRIMES); //Class 2
+				final int ROWS_PER_PAGE = 50;
+				final int COLUMNS_PER_PAGE = 4;
+
+				//Class 3
+				RowColumnPagePrinter tablePrinter =	new RowColumnPagePrinter(ROWS_PER_PAGE,
+				COLUMNS_PER_PAGE,"The First " + NUMBER_OF_PRIMES +" Prime Numbers");
+
+				tablePrinter.print(primes);
+			}
+		}	
+
+		Notice how the program has been split into three main responsibilities. The main program is contained in the PrimePrinter class all by itself. Its responsibility is to handle the execution environment.
+
+		For example, if this program were converted to a SOAP service, this is the class that would be affected.
+
+	-- Organizing for Change
+		
+
+		A class that must be opened for change
+			public class Sql {
+				public Sql(String table, Column[] columns)
+				public String create()
+				public String insert(Object[] fields)
+				public String selectAll()
+				public String findByKey(String keyColumn, String keyValue)
+				public String select(Column column, String pattern)
+				public String select(Criteria criteria)
+				public String preparedInsert()
+				private String columnList(Column[] columns)
+				private String valuesList(Object[] fields, final Column[] columns)
+				private String selectWithCriteria(String criteria)
+				private String placeholderList(Column[] columns)
+			}
+
+		The Sql class must change when we add a new type of statement. It also must change when we alter the details of a single statement type—for example, if we need to modify the select functionality to support subselects. These two reasons to change mean that the	Sql class violates the SRP.	
+
+		We can spot this SRP violation from a simple organizational standpoint. The method outline of Sql shows that there are private methods, such as selectWithCriteria , that appear to relate only to select statements. Private method behavior that applies only to a small subset of a class can be a useful heuristic for spotting potential areas for improvement.
+
+
+		A set of closed classes
+
+		abstract public class Sql {
+			public Sql(String table, Column[] columns)
+			abstract public String generate();
+		}
+		public class CreateSql extends Sql {
+			public CreateSql(String table, Column[] columns)
+			@Override public String generate()
+		}
+		public class SelectSql extends Sql {
+			public SelectSql(String table, Column[] columns)
+			@Override public String generate()
+		}
+		public class InsertSql extends Sql {
+			public InsertSql(String table, Column[] columns, Object[] fields)
+			@Override public String generate()
+			private String valuesList(Object[] fields, final Column[] columns)
+		}
+		public class SelectWithCriteriaSql extends Sql {
+			public SelectWithCriteriaSql(
+			String table, Column[] columns, Criteria criteria)
+			@Override public String generate()
+		}
+
+		public class ColumnList {
+			public ColumnList(Column[] columns)
+			public String generate()
+		}
+
+		The risk that one function could break another becomes vanishingly small. From a test standpoint, it becomes an easier task to prove all bits of logic in this solution, as the classes are all isolated from one another.
+
+		Our restructured Sql logic represents the best of all worlds. It supports the SRP. It also supports another key OO class design principle known as the Open-Closed Principle, or OCP: 4 Classes should be open for extension but closed for modification. Our restructured	Sql class is open to allow new functionality via subclassing, but we can make this change while keeping every other class closed.
