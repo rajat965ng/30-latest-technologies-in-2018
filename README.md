@@ -28,3 +28,5 @@ Mongoose: abstracts away the MongoDB boilerplate for a simple Schema solution.
 } }
 10. Clean Code - Software Craftsmenship [Intake from the book by R.C. Martin] 
 11. Security Assertion Markup Language (SAML) + Spring Boot 5 implementation on Okta (Single Sign On) platform
+12. JavaScript (Concurrency Aspects) [ TODO ]
+13. Java Programming Interview Exposed [ TODO ] 
