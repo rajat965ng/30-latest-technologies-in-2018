@@ -1,0 +1,72 @@
+Chapter - 11 Systems
+
+        -- Software systems should separate the startup process, when the application objects are
+constructed and the dependencies are “wired” together, from the runtime logic that takes
+over after startup.
+
+        -- The startup process is a concern that any application must address. It is the first con-
+cern that we will examine in this chapter. The separation of concerns is one of the oldest
+and most important design techniques in our craft.
+
+        -- Unfortunately, most applications don’t separate this concern. The code for the startup
+process is ad hoc and it is mixed in with the runtime logic. Here is a typical example:
+
+    public Service getService() {
+    if (service == null)
+    service = new MyServiceImpl(...); // Good enough default for most cases?
+    return service;
+    }
+
+        -- If MyServiceImpl is a heavyweight object, we will need to
+make sure that an appropriate TEST DOUBLE or MOCK OBJECT gets assigned to the ser-
+vice field before this method is called during unit testing. Because we have construction
+logic mixed in with normal runtime processing, we should test all execution paths (for
+example, the null test and its block). Having both of these responsibilities means that the
+method is doing more than one thing, so we are breaking the Single Responsibility Principle
+in a small way.     
+
+	-- Methods to achieve seperation of concerns
+
+        -- Separation of Main
+        One way to separate construction from use is simply to move all aspects of construction to main , or modules called by main , and to design the rest of the system assuming that all objects have been constructed and wired up appropriately.
+
+        -- Factories
+
+        -- Dependency injections
+        Inversion of Control moves secondary responsibilities from an object to other objects that are dedicated to the purpose, thereby supporting the Single Responsibility Principle. In the context of dependency management, an object should not take responsibility for instantiating dependencies itself. Instead, it should pass this responsibility to another “authoritative” mechanism, thereby inverting the control. Because setup is a global concern, this authoritative mechanism will usually be either the “main” routine or a special-purpose container.
+
+        JNDI lookups are a “partial” implementation of DI, where an object asks a directoryserver to provide a “service” matching a particular name.
+
+  		MyService myService = (MyService)(jndiContext.lookup(“NameOfMyService”));
+
+  		Lazy-Initialization
+  		-- first most DI containers won't create objects until it is needed. Second, many of these containers provides mechanisms for invoking factories or for constructing proxies, which could be used for lazy-evaluation or similar optimization.
+
+
+  	-- It is a myth that we can get systems “right the first time.” Instead, we should implement only today’s 
+	   stories, then refactor and expand the system to implement new stories tomorrow. This is the essence of iterative and incremental agility. Test-driven development, refactoring, and the clean code they produce make this work at the code level.
+
+Cross-Cutting Concerns
+
+Java Proxies
+	-- the dynamic proxies provided in the JDK only work with interfaces. To proxy classes, you have to use a byte-code manipulation library, such as CGLIB, ASM, or Javassist 
+
+
+	Optimize Decision Making
+
+	-- 
+
+	Systems Need Domain-Specific Languages
+	-- Domain-Specific Languages (DSLs), 22 which are separate, small scripting languages or APIs in standard 
+		languages that permit code to be written so that it reads like a structured form of prose that a domainexpert might write.
+
+	-- A good DSL minimizes the “communication gap” between a domain concept and the code that implements it, just as agile practices optimize the communications within a team and with the project’s stakeholders.	
+
+	-- If you are implementing domain logic in the same language that a domain expert uses, there is less
+		 risk that you will incorrectly translate the domain into the implementation.
+
+	Conclusion
+	-- At all levels of abstraction, the intent should be clear. This will only happen if you
+	write POJOs and you use aspect-like mechanisms to incorporate other implementation
+	concerns noninvasively. Whether you are designing systems or individual modules, never forget to use the
+	simplest thing that can possibly work.	 
