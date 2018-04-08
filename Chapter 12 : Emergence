@@ -1,0 +1,45 @@
+Chapter 12 : Emergence
+
+	-- Many of us feel that Kent Beck’s four rules of Simple Design 1 are of significant help in
+creating well-designed software.
+
+	• Runs all the tests
+	  -- making our systems testable pushes us toward a design where our classes are small and single purpose. It’s just easier to test classes that conform to the SRP. The more tests we write, the more we’ll continue to push toward things that are simpler to test. So making sure our system is fully testable helps us create better designs.
+
+	  -- Tight coupling makes it difficult to write tests. So, similarly, the more tests we write, the more we use principles like DIP and tools like dependency injection, interfaces, and abstraction to minimize coupling. Our designs improve even more.
+
+
+	• Contains no duplication
+	  -- We do this by incrementally refactoring the code.	We can increase cohesion, decrease coupling, separate concerns, modularize system concerns, shrink our functions and classes, choose better names,and so on. This is also where we apply the final three rules of simple design: Eliminate duplication, ensure expressiveness, and minimize the number of classes and methods.
+
+      -- duplication can exist in other forms such as duplication of implementation. For example, we might have two methods in a collection class:
+		int size() {}
+		boolean isEmpty() {}
+
+	  -- We could have separate implementations for each method. The isEmpty method could track a boolean, while size could track a counter. Or, we can eliminate this duplication by tying isEmpty to the definition of size :
+	  
+		boolean isEmpty() {
+		return 0 == size();
+		}	
+
+	  -- The TEMPLATE METHOD pattern is a common technique for removing higher-level duplication.	
+
+
+	• Expresses the intent of the programmer
+	  -- You can also express yourself by keeping your functions and classes small. Small classes and functions are usually easy to name, easy to write, and easy to understand.	
+	  
+	  -- By using the standard pattern names, such as COMMAND or VISITOR , in the names of the classes that implement those patterns, you can succinctly describe your design to other developers.
+	  
+	  -- Spend a little time with each of your functions and classes. Choose better names, split large functions into smaller functions, and generally just take care of what you’ve created. Care is a precious resource.
+
+
+	• Minimizes the number of classes and methods
+	  -- In an effort to make our classes and methods small, we might create too many tiny classes and methods. So this rule suggests that we also keep our function and class counts low.
+
+	  -- a coding standard that insists on creating an interface for each and every class. Or consider developers who insist that fields and behavior must always be separated into data classes and behavior classes. Such dogma should be resisted and a more pragmatic approach adopted.
+
+	  -- however, that this rule is the lowest priority of the four rules of Simple Design. So, although it’s important to keep class and function count low, it’s more important to have tests, eliminate duplication, and express yourself.
+
+
+
+
