@@ -1,0 +1,28 @@
+Chapter 14: Successive Refinement
+
+
+
+-- To write clean code, you must first write dirty code and then clean it.
+
+-- Most freshman programmers (like most grade-schoolers) don’t follow this advice particularly well. They 
+	believe that the primary goal is to get the program working. Once it’s “working,” they move on to the next task, leaving the “working” program in whatever state they finally got it to “work.” Most seasoned programmers know that this is professional suicide.
+
+
+	-- Incrementalism	
+		One of the best ways to ruin a program is to make massive changes to its structure in the name of
+		improvement. Some programs never recover from such “improvements.” The problem is that
+		it’s very hard to get the program working the same way it worked before the “improvement.”
+
+		To avoid this, I use the discipline of Test-Driven Development (TDD). One of the central doctrines of this approach is to keep the system running at all times.
+
+
+		To achieve this, I need a suite of automated tests that I can run on a whim and that verifies that the behavior of the system is unchanged.
+
+
+		The unit tests were written in Java and administered by JUnit . The acceptance tests were written as wiki pages in FitNesse . I could run these tests any time I wanted, and if they passed, I was confident that the system was working as I specified.
+
+
+	-- Much of good software design is simply about partitioning—creating appropriate places to put different 
+		kinds of code. This separation of concerns makes the code much simpler to understand and maintain.	
+
+		
