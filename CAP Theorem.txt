@@ -1,0 +1,78 @@
+CAP Theorem (Consistency, Availability and Partitioning)
+
+-- the size of data grew immensely, making it necessary to find more scalable solutions than the so far existing ACID-databases. As a 
+	result new principles were developed, summed up under the BASE-paradigm (basically available, soft-state, eventual consistency).
+
+-- the consequences of this paradigm change and its implications, resulting in the CAP Theorem.
+
+-- the CAP-theorem still is one of the most important findings for distributed databases.	
+
+-- The CAP-Theorem
+	A distributed database has three very desirable properties:
+	1. Tolerance towards Network Partition
+	2. Consistency
+	3. Availability
+
+	The CAP theorem states: You can have at most two of these properties for any shared-data system
+
+	Consistency - every read would get you the most recent write
+	
+	Availability - every node (if not failed) always executes queries
+
+	Partition Tolerant -  even if the connections between nodes are down, the other two (A & C) promises, are kept. 
+
+
+-- The C and A in ACID represent different concepts than C and in A in the CAP theorem.
+
+	-- CP (Consistent and Partition Tolerant) - At first glance, the CP category is confusing, i.e., a system that is consistent and partition tolerant but never available. CP is referring to a category of systems where availability is sacrificed only in the case of a network partition. eg. HBase, MongoDB, Redis, MemcacheDB, BigTable like systems.
+
+	-- CA (Consistent and Available) - CA systems are consistent and available systems in the absence of any network partition. Often a single node's DB servers are categorized as CA systems. Single node DB servers do not need to deal with partition tolerance and are thus considered CA systems. The only hole in this theory is that single node DB systems are not a network of shared data systems and thus do not fall under the preview of CAP. eg. Traditional Databasel like Postgre, MySql etc. 
+	
+	-- AP (Available and Partition Tolerant) - These are systems that are available and partition tolerant but cannot guarantee consistency. eg. Voldemort, Riak, Cassandra, CouchDB, Dynamo like systems.
+
+
+
+
+	Theoretically there are three options:
+	
+		1. Forfeit Partition Tolerance
+		 If The system does not have a defined behavior in case of a network partition. 
+		 2-Phase-Commit as a trait of this option, although 2PC supports temporarily partitions (node crashes, lost messages) by waiting until all messages are received.
+
+		2. Forfeit Consistency
+		 since the nodes cannot communicate with each other there is no guarantee that the data is consistent.
+		  It implies optimistic locking and inconsistency resolving protocols. 
+
+		3. Forfeit Availability
+		 a.) Data can only be used if its consistency is guaranteed. This implies pessimistic locking, since we need to lock any updated object until the update has been propagated to all nodes.   
+		 b.) In case of a network partition it might take quite long until the database is in a consistent state again, thus we cannot guarantee high availability anymore.
+
+-- The option of forfeiting Partition Tolerance is not feasible in realistic environments, since we will always have network partitions.
+
+-- Thus it follows that we need to decide between Availability(BASE) and Consistency(ACID)
+
+-- Consistency and Availability can be measured in a spectrum (means it can be there in less or more proportion)
+
+-- Partition Tolerance is rather binary. (Eithere it will be there or will not be there)
+
+-- the system should forfeit Partition Tolerance as long as there is no partition, and as soon as a network partition occurs it needs 
+	to switch its strategy and choose a tradeoff between Consistency and Availability.
+
+-- PNUTS from Yahoo (Database)
+    Providesa consistency model which is in the middle of the C-A-tradeoff: “per-record timeline consistency: all replicas of a given record apply all updates to the record in the same order”. 
+    This means, the database will not immediately be consistent, but it is guaranteed that all updates made on an object are done in the same order they occurred in the timeline for all replicas of the object.
+
+
+-- Dynamo
+	a completely decentralized Key-value Store developed by Amazon which strives for high availability. It incorporates the “eventual consistency” principle from BASE: a decentralized replica synchronization protocol maintains consistency during update with a quorum-like approach and object versioning. Through gossip failures can be detected.
+
+
+--  Availability is achieved by replicating the data across different machines
+
+--  Consistency is achieved by updating several nodes before allowing further reads 
+
+--  Total partitioning, meaning failure of part of the system is rare. However, we could look at a delay, a latency, of the update 
+	between nodes, as a temporary partitioning. 
+	It will then cause a temporary decision between A and C:
+	1. On systems that allow reads before updating all the nodes, we will get high Availability
+	2. On systems that lock all the nodes before allowing reads, we will get Consistency
