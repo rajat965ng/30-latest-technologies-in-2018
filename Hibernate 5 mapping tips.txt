@@ -1,0 +1,450 @@
+Hibernate 5 mapping tips
+
+
+ four basic strategies for mapping class inheritance in Hibernate:
+
+1.No inheritance - just copy superclass properties to subclasses
+
+@MappedSuperclass
+public abstract class BaseEntity {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Version
+    private long version;
+
+    // getters/setters etc.
+}
+
+
+@Entity
+@Table(name = "\"user\"")
+public class User extends BaseEntity {
+    private String username;
+
+    @org.hibernate.annotations.Type(type = "yes_no")
+    private boolean isAdmin;
+
+    // constructor/getters/setters etc.
+}
+
+@Entity
+public class Product extends BaseEntity {
+    public String name;
+    public BigDecimal price;
+
+    // constructor/getters/setters etc.
+}
+
+NOTE: Querying for BaseEntity via JPA will throw exception with message Not an entity: class BaseEntity. We can query for BaseEntity only via Hibernate Session object.
+
+
+Using different sequences:
+
+@MappedSuperclass
+public abstract class DataObject implements Serializable {
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgen")
+    @Column(name = "id")
+    private int id;
+}
+
+@Entity
+@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "entityaseq")
+@Table(name = "entity_a")
+public class EntityA extends DataObject { 
+
+}
+
+@Entity
+@SequenceGenerator(initialValue = 1, name = "idgen", sequenceName = "entitybseq")
+@Table(name = "entity_b")
+public class EntityB extends DataObject {
+
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+2.Table per class hierarchy
+
+In this strategy all subclasses data will be stored in single table. A special column called discriminator is added to that table to help Hibernate know which subclass is stored in given row.
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "animal_type")
+public abstract class Animal extends BaseEntity {
+ 
+    private String name;
+  // constructor/getters/setters etc.
+   
+}
+
+@Entity
+@DiscriminatorValue("cat")
+public class Cat extends Animal {
+    private boolean isPurring;
+
+    // getters/setter etc.
+}
+
+@Entity
+@DiscriminatorValue("dog")
+public class Dog extends Animal {
+    private boolean isBarking;
+
+    // getters/setter etc.
+}
+
+
+pros
+1.Fast - no joins are needed to retrieve data
+2.Simple - only single table is needed in database
+
+cons
+1.Cannot create constrains in database - all columns representing subclass data must be nullable. This is serious drawback because without constrains data can be easily corrupted by application bug or by inattentive users
+2.Wasted space - when subclasses have many fields shared table will contain many columns most of which will contain NULLs
+
+Recommendation:
+SINGLE_TABLE performs the best in terms of SQL statements, but we lose on the data integrity side since we cannot use NOT NULL constraints.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+3.Table per concrete class
+
+
+This inheritance strategy will generate database table per each concrete class in the hierarchy.
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Animal extends BaseEntity {
+    private String name;
+    // ...
+}
+
+@Entity
+public class Dog extends Animal {
+    private boolean isBarking;
+    // ...
+}
+
+@Entity
+public abstract class AbstractCat extends Animal {
+    private boolean isPurring;
+    // ...
+}
+
+@Entity
+public class GrumpyCat extends AbstractCat {
+    private int grumpiness;
+    // ...
+}
+
+@Entity
+public class Kitten extends AbstractCat {
+    public int sweetness;
+    // ...
+}
+
+To enable table per concrete class strategy, root of the inheritance hierarchy must be marked as @Entity and must have  @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) annotation. 
+
+All subclasses (even abstract ones) must be marked as @Entity. Abstract classes will not be represented in database.
+
+
+Before we move to the next strategy let’s consider one more example. Say we want to store photos of animals using Photo entity:
+
+@Entity
+public class Photo extends BaseEntity {
+    @ManyToOne
+    private Animal animal;
+
+    private String photoFilename;
+
+    // ...
+}
+For this class Hibernate will generate table:
+
+CREATE TABLE photo
+(
+  id bigint NOT NULL,
+  version bigint NOT NULL,
+  photofilename character varying(255),
+  animal_id bigint,
+
+  CONSTRAINT photo_pkey PRIMARY KEY (id)
+)
+This time I used SQL instead of table picture to show an important fact. Do you see animal_id column in that table, it will be used to connect photos to animals. Unfortunately because various types of animals are stored in different tables we cannot create foreign key constraint on that column, this is serious drawback of table per concrete class strategy.
+
+
+pros
+1.Constraint friendly - You can introduce separate database constrains for each concrete subclass
+2.Fast when querying concrete subclasses (queries directly access subclass table)
+
+cons
+1.May be slow when you query/lazy load abstract superclasses (union all and subquery)
+2.Cannot introduce foreign key constrains for superclasses references (like in  Photo example)
+
+Recommendation:
+TABLE_PER_CLASS should be avoided since it does not render efficient SQL statements.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+4.Table per every class
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Animal extends BaseEntity {
+    private String name;
+    // ...
+}
+
+@Entity
+@PrimaryKeyJoinColumn(name = "cat_id")
+public abstract class AbstractCat extends Animal {
+    private boolean isPurring;
+    // ...
+}
+
+@Entity
+public class GrumpyCat extends AbstractCat {
+    private int grumpiness;
+    // ...
+}
+
+@Entity
+public class Kitten extends AbstractCat {
+    public int sweetness;
+    // ...
+}
+
+@Entity
+@PrimaryKeyJoinColumn(name = "dog_id")
+public class Dog extends Animal {
+    private boolean isBarking;
+    // ...
+}
+
+By default primary keys in tables corresponding to mapped classes will be named id. Sometimes it is useful to change name of the primary key column, we can use @PrimaryKeyJoinColumn(name = "primary_key_name") to provide new primary key column name.
+
+
+In table per every class strategy data from superclasses will be stored in dedicated tables, SQL joins will be used to gather entity data from all superclasses. When we add new entity to database Hibernate will split it according to inheritance hierarchy and will execute many inserts. An example will help us understand how it works.
+
+Now let’s see how storing/retrieving animal photos changed in table per every class strategy. We will use the same Photo class as in previous example:
+
+@Entity
+public class Photo extends BaseEntity {
+    @ManyToOne
+    private Animal animal;
+
+    private String photoFilename;
+    // ...
+}
+First we must notice that Photo table now has a foreign key constrain to Animal table:
+
+CREATE TABLE photo
+(
+  id bigint NOT NULL,
+  version bigint NOT NULL,
+  photofilename character varying(255),
+  animal_id bigint,
+  CONSTRAINT photo_pkey PRIMARY KEY (id),
+
+  CONSTRAINT fk6mbbc9717gifwpiqhd13t060r FOREIGN KEY (animal_id)
+      REFERENCES animal (id) MATCH SIMPLE
+)
+
+When we try to query database for all photos with animals:
+
+entityManager.createQuery(
+        "select p from Photo p join fetch p.animal"
+    ).getResultList()
+
+
+This is really heavy query if plenty of joins, it may cause some performance problems.
+
+
+
+pros
+1.Constraint friendly - we may easily add constrains to database. References to superclasses are guarded by foreign key constrains.
+cons
+2. Poor performance - simple operations like saving entity to database or reading entity from database often require many SQL statements or complicated SQL queries with joins
+
+Recommendation:
+Before using this strategy you should consider using simpler and faster table per hierarchy strategy. Use this strategy only if you have many subclasses that define many fields that cannot by shared using superclass.    
+
+JOINED addresses the data integrity limitation while offering more complex statements. As long as you don’t use polymorphic queries or @OneToMany associations against base types, this strategy is fine. Its true power comes from polymorphic @ManyToOne associations backed by a Strategy pattern on the data access layer side.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+Enum Type Mapping example
+
+
+An enum type is mapped to a database via the @javax.persistence.Enumerated annotation.
+
+There are two strategies to store enum values in the database -
+
+@Enumerated(EnumType.ORDINAL) →  Store the enum values  according the ordinal position (i.e. 0 , 1, 2 … ) of enum value.
+@Enumerated(EnumType.STRING) →  Store the enum values according to the name of enum value.
+The default is EnumType.ORDINAL.
+
+Example:
+
+Phone.java
+
+public enum Phone {
+   MOBILE, LANDLINE
+}
+
+AddressType.java
+
+
+public enum AddressType {
+   PERMANENT, COMMUNICATION
+}
+
+Create an Address entity annotated with @Enitity as follows.
+
+Address.java
+
+
+@Entity
+@Table(name = "ADDRESS")
+public class Address {
+
+   @Id
+   private long id;
+
+   @Column(name = "CITY")
+   private String city;
+
+   @Column(name = "STATE")
+   private String state;
+
+   @Enumerated(EnumType.STRING)
+   @Column(name = "ADDRESS_TYPE")
+   private AddressType addressType;
+
+   @Enumerated(EnumType.ORDINAL)
+   @Column(name="PHONE")
+   private Phone phone;
+
+   //Getters and setters are omitted for brevity
+}
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+Hibernate Embeddable Composite Primary Key | @Embeddable, @EmbeddedId, @Embedded
+
+
+
+@Embeddable
+public class EmployeeId implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Column(name = "EMP_ID")
+    private int empId;
+    @Column(name = "DEPARTMENT")
+    private String department;
+}
+
+@Embeddable
+public class Address {
+
+    private String street;
+    private String city;
+    private String zip;
+    private String state;
+}
+
+We can simply embed an embeddable class using the @Embedded annotation. This class will be embedded in the same database table as the source. We can optionally override the attributes of the embedded class using the @AttributeOverrides and @AttributeOverride annotation. We first specify – by name – which attribute we wish to override. Afterwards we can override the attribute by using the @Column annotation.
+
+@Entity
+public class Employee implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    EmployeeId id;
+    @Column(name="EMP_NAME")
+    private String empName;
+
+	@Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "zip", column = @Column(length = 10)),
+            @AttributeOverride(name = "city", column = @Column(nullable = false))
+    })
+    private Address address;
+
+}    
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+How to map a collection of basic as well as embeddable types using JPA’s @ElementCollection and @CollectionTable annotations.
+
+@Embeddable
+public class Address {
+    @NotNull
+    @Size(max = 100)
+    private String addressLine1;
+
+    @NotNull
+    @Size(max = 100)
+    private String addressLine2;
+
+    @NotNull
+    @Size(max = 100)
+    private String city;
+
+    @NotNull
+    @Size(max = 100)
+    private String state;
+
+    @NotNull
+    @Size(max = 100)
+    private String country;
+
+    @NotNull
+    @Size(max = 100)
+    private String zipCode;
+}
+
+
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
+    @Size(max = 100)
+    private String name;
+
+    @NotNull
+    @Email
+    @Size(max = 100)
+    @Column(unique = true)
+    private String email;
+
+    @ElementCollection
+    @CollectionTable(name = "user_phone_numbers", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "phone_number")
+    private Set<String> phoneNumbers = new HashSet<>();
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_addresses", joinColumns = @JoinColumn(name = "user_id"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "addressLine1", column = @Column(name = "house_number")),
+            @AttributeOverride(name = "addressLine2", column = @Column(name = "street"))
+    })
+    private Set<Address> addresses = new HashSet<>();
+}
+
+We use @ElementCollection annotation to declare an element-collection mapping. All the records of the collection are stored in a separate table. The configuration for this table is specified using the @CollectionTable annotation.
+
+The @CollectionTable annotation is used to specify the name of the table that stores all the records of the collection, and the JoinColumn that refers to the primary table.
+
+Moreover, When you’re using an Embeddable type with Element Collection, you can use the @AttributeOverrides and @AttributeOverride annotations to override/customize the fields of the embeddable type.
+
+-------------------------------------------------------------------------------------------------------------------------------------
