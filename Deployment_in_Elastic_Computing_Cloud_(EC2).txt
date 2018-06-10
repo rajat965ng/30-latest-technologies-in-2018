@@ -1,0 +1,32 @@
+[Deployment in Elastic Computing Cloud (EC2)]
+
+1 — Setup EC2 instance [eg. ec2-18-218-74-173.us-east-2.compute.amazonaws.com] for [Red Hat Enterprise Linux 7.5 (HVM), SSD Volume Type - ami-03291866] Or Amazon Linux
+
+-- Store the .pem file immidiately in a safe location post creating it.
+-- you cannot download .pem file again. You can download the .pem file ONLY once and that is when you create a new key-pair.
+
+-- We configure the "security groups" . This setting allows access to port 80 (HTTP) from anywhere, and SSH access also.
+
+
+2 -- SSH EC2 instance 
+
+[user:ec2-user]
+-- ssh -i rajatnigam.pem ec2-user@ec2-18-216-229-172.us-east-2.compute.amazonaws.com
+
+3. -- Steps to install Docker 
+
+-- sudo yum update -y
+
+-- [docker packages dependencies for RHEL 7]
+	-- sudo yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.55-1.el7.noarch.rpm
+	-- sudo yum install -y http://mirror.centos.org/centos/7/extras/x86_64/Packages/pigz-2.3.3-1.el7.centos.x86_64.rpm 
+
+-- [iptables package, in case if you might need to stop firewall]
+	-- http://mirror.centos.org/centos/7/os/x86_64/Packages/system-config-firewall-tui-1.2.29-10.el7.noarch.rpm
+
+   [install Docker]
+-- sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+-- sudo yum install docker-ce
+-- sudo service docker start
+
+4. -- Execute Docker Run command to spin any container
