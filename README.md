@@ -33,3 +33,4 @@ Mongoose: abstracts away the MongoDB boilerplate for a simple Schema solution.
 14. Apache Camel (Enterprise Integration Design Pattern) [ TODO ]
 15. Spring 5, Webflux with Embeded MongoDb
 16. CAP Theorem, Hibernate 5 tips (write up)
+17. Elastic Computing Cloud (EC2) : Docker container deployment [Manual] 
