@@ -1,6 +1,7 @@
 
 # Update "managed-schema" file at solr server core and add following text into it. This will enable search on every field.
 
+```
 <fieldType name="text_like" class="solr.TextField" positionIncrementGap="100">
     <analyzer type="index">
       <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -14,10 +15,11 @@
       <filter class="solr.LowerCaseFilterFactory"/>
     </analyzer>
   </fieldType>
-  
+  ```
   
  # Code to create schema. This code has SolrField enum.
  
+ ```
  @Test
     public void create_managedSchema(){
         SolrClient solrClient = new HttpSolrClient.Builder(solrHost).build();
@@ -39,9 +41,11 @@
             }
         });
   }
-    
+ ```
+ 
 # SolrField Enum
 
+```
 public enum SolrFields {
     fmno(false,"text_like"),
     name(false,"text_like"),
@@ -67,5 +71,5 @@ public enum SolrFields {
         return type;
     }
 }
-    
+```    
     
