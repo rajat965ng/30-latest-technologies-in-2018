@@ -34,4 +34,4 @@ Mongoose: abstracts away the MongoDB boilerplate for a simple Schema solution.
 15. Spring 5, Webflux with Embeded MongoDb
 16. CAP Theorem, Hibernate 5 tips (write up)
 17. Amazon Elastic Compute Cloud (Amazon EC2) : Docker container deployment [Manual] 
-18. Spring Cloud Config Server for Externalizing configurations
+18. Spring Cloud Config Server for Externalizing configurations [branch: spring-cloud-config]
