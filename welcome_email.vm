@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <title>Client news</title>
+  <style type="text/css">
+    @media (max-width:720px) {
+          img.logo{
+            width:70px !important;
+            height:70px !important;
+          }
+          .full-width{
+            padding: 0!important;
+           }
+          .header-container{
+            padding: 6px 0 !important;
+          }
+          .header-text-1{
+            font-size: 26px !important;
+          }
+          .toggle-padding-text{
+            padding: 0 16px !important;
+          }
+          .toggle-padding-logo{
+            padding-left: 12px !important;
+          }
+          .container{
+            padding-top: 15px !important;
+          }
+        }
+  </style>
+</head>
+
+
+
+
+<body style="font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+<table width="100%" style="margin: 0px; padding: 0px; border-spacing:0; border-collapse:collapse; background: #F1F1F1; border:1px solid #ddd;">
+  <tr>
+      <td style="padding:30px 3% 0;" class="container">
+          <table width="100%" style="margin: 0px; padding: 0px; border-spacing:0; border-collapse:collapse;">
+              
+              <!-- header -->
+              <tr>
+                <td style="background-color:#002B5C; padding:35px 0;" class="header-container">
+                  <table style="padding: 0 62px; margin: 0; border-spacing:0;" class="full-width">
+                    <tr>
+                      <td style="padding-left:28px;" class="toggle-padding-logo">
+                        <img class="logo" style="height:80px; width:80px; color:white; font-size:10px;" src="http://devwebassets.intranet.mckinsey.com/clientnews/current/images/logo/email2.png" alt="Client News"/>
+                      </td>
+                      <td style="padding-left:10px;">
+                        <span style="font-size:42px; font-weight:bold; display:block; color:white;" class="header-text-1">Client News</span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            
+
+
+              <tr>
+                <td>
+                  <table style="padding:20px 84px; margin: 0px; border-spacing:0;" class="full-width">
+                    <tr>
+                      <td style="padding:0 32px; border: 1px solid transparent; border-bottom-color: #ddd; background:#fff;" class="toggle-padding-text">
+                        <table style="margin: 0px; padding: 0px; border-spacing:0;">
+                          <tr>
+                            <td style="font-size:13px; line-height:18px;">
+                              <br />
+                              Hi $userName,
+                              <br />
+                              <br />
+                              Our records indicate that you are starting a new engagement with $clientName<sup>1</sup> - congratulations. To help you stay informed, we have automatically signed you up for $clientName news alerts using the Client News app from Digitizing our Firm.
+                              <br />  
+                              <br />
+                              To read up on news related to $clientName over the past few months,
+                              <br />
+                              <br />
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td align="center">
+                              <a style="padding:8px 32px; font-size:14px; background-color:#0068B6; text-decoration:none; color: white; display:inline-block;" href="$appURL">Visit Client News Online</a>
+                            </td>
+                          </tr>
+
+
+                          <tr>
+                            <td style="font-size:13px; line-height:18px; word-break: break-word;">
+                              <br />
+                              If you do not wish to receive daily news alert emails, please <a href="$appURL/#/settings" style="">unsubscribe</a>.
+                              <br />
+                              <br />
+                              <b>Did you know - you can use the Client News site to:</b>
+                              <ul style="padding-left:20px; padding-top:10px; margin:0; font-size:13px; line-height:20px;">
+                                <li>
+                                  Subscribe to and customize news for clients and industries
+                                </li>
+                                <li>
+                                  Read high quality news from leading sources (e.g. New York Times), without paywalls
+                                </li>
+                                <li>
+                                  Read news across your iPhone, iPad, and laptop
+                                </li>
+                                <li>
+                                  Receive regular news updates via morning alert emails
+                                </li>
+                                <li>
+                                  Save news items for later and read them even when your on a plane, e.g. offline
+                                </li>
+                                <li>
+                                  Share news with colleagues via MckTwitter and/or external collaborators via email.
+                                </li>
+                              </ul>
+                              <br />
+                              If you experience any issues or to share feedback, please email <a href="mailto:Client_News_feedback@mckinsey.com" target="_top">Client_News_feedback@mckinsey.com</a>.
+                              <br />
+                              <br />  
+                              Thanks,
+                              <br />
+                              The Client News Team
+                              <br />
+                              <br />
+                              See what other cool <a href="http://home.intranet.mckinsey.com/dof/">Digitizing Our Firm apps and tools</a> are available now or in the works.
+                              <br />
+                              <br />
+                              1 If this is not correct please let us know: <a href="mailto:Client_News_feedback@mckinsey.com" target="_top">Client_News_feedback@mckinsey.com</a>
+                              <br />
+                              <br />
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+
+
+
+              <tr>
+                <td>
+                  <table style="padding:0 84px; margin: 0px; border-spacing:0;" class="full-width">
+                    <tr>
+                      <td style="color: #A7A7A9; font-size:10px; width:80%; padding:10px 0; text-align:center;">
+                        You are receiving this email based on news you are subscribed to via the McKinsey &amp; Company Client News application.
+                        If you do not want to receive these emails, or the news shown above is not relevant, please visit the settings page to 
+                        <a href="$appURL/#/settings" style="test-decoration:none; color: #A7A7A9;">customize your experience</a>.
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+
+
+          </table>
+   
+      </td>
+  </tr>
+    
+</table>
+</body>
+</html>

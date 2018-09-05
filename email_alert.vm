@@ -1,0 +1,202 @@
+<html>
+   <head>
+      <title>Your Client News Morning Digest</title>
+      <style type="text/css">
+         .newstable tr td {
+         border-bottom: 1px solid #eaeaea;
+         }
+         .newstable:last-child tr td{
+         border-bottom: 0;
+         }
+      </style>
+   </head>
+   <body style="font-family:'Arial';background-color: #f1f1f1;">
+      <table border="0" cellspacing="0" cellpadding="0" width="100%" style="margin:0 auto;">
+         <tr>
+            <td valign="top">
+               #if($newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company"))
+               <table border="0" cellspacing="0" cellpadding="0" width="100%" style="padding-bottom: 20px">
+                  <tr>
+                     <td colspan="2" style="background: #002960; padding:25px 30px; color:#fff">
+                        Good morning, $newsItemByCategorizationWrapper.userName! Here is your top company news for: <strong>$newsItemByCategorizationWrapper.date</strong>.
+                     </td>
+                  </tr>
+               </table>
+               #foreach( $key in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company").keySet())
+               <table cellpadding="0" cellspacing="0" border="0" width="100%" style="padding-bottom: 20px; padding-top: 0">
+                  <tr>
+                     <td>
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fff; padding: 20px 30px; border-bottom: 1px solid #eaeaea;">
+                           <tr>
+                              <td align="left" text-align="left" width="100%" style="display: inline-block; width: calc(100% - 54px)">
+                                 <h3 style="margin: 0; padding: 0;">$key.split("\|")[1]</h3>
+                              </td>
+                              <td align="right" text-align="right" style="display: inline-block; width: 38px; margin-left: 16px">
+                                 <a href="$newsItemByCategorizationWrapper.hostName/#/subscription?action=edit&code=$key.split("\|")[0]" style="font-weight: bold; color:#0065BD;text-decoration: none;">
+                                 EDIT
+                                 </a>
+                              </td>
+                           </tr>
+                        </table>
+                        #foreach( $newsItem in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company").get($key))
+                        <table class="newstable" cellspacing="0" cellpadding="0" border="0" width="100%"  style="background-color: #fff; padding: 0px 30px;">
+                           <tr>
+                              <td style="padding-top:20px; padding-bottom: 20px; font-family:Arial">
+                                 <div style="float: left; width: 85%; padding-bottom: 10px;">
+                                    <a href="$newsItem.link" style="font-weight: bold;color:#0065BD;text-decoration: none;">$newsItem.title
+                                    </a>
+                                 </div>
+                                 <div style="float:left; width:100%;font-size:12px; color:#a9a9a9;">$newsItem.publicationDate #if( $newsItem.author) | $newsItem.author #end</div>
+                                 #if( $newsItemByCategorizationWrapper.headlinesOnly.equals("N"))
+                                 <div style="float:left; width:100%;font-size:14px;margin-top:10px;line-height: 1.5em;">$newsItem.body...<a style="font-size:13px;color: #3A8ED2; text-decoration: none; font-weight:bold;" href="$newsItem.link">read more</a></div>
+                                 #end
+                              </td>
+                           </tr>
+                        </table>
+                        #end
+                     </td>
+                  </tr>
+               </table>
+               #end
+               <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                     <td>
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%"  style="background-color: #fff; padding: 24px 0;">
+                           <tr>
+                              <td align="center" style="font-weight:bold; font-size: 16px;">
+                                 Want to subscribe to another company?
+                              </td>
+                           </tr>
+                           <tr>
+                              <td align="center" style="padding-top:16px;">
+                                 <a style="font-weight:bold; display:inline-block; font-size: 14px; background-color: #0068B6; text-decoration: none; color: white; border: 14px solid  #0068B6;"
+                                    href="$newsItemByCategorizationWrapper.hostName/#/subscription?action=add">
+                                 Add a subscription
+                                 </a>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+               </table>
+               #end
+               #if( $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry"))
+               <table border="0" cellspacing="0" cellpadding="0" width="100%" style="padding-bottom: 20px">
+                  <tr>
+                     <td colspan="2" style="background: #002960; padding:25px 30px; color:#fff">
+                        Good morning, $newsItemByCategorizationWrapper.userName! Here is your top industry news for: <strong>$newsItemByCategorizationWrapper.date</strong>.
+                     </td>
+                  </tr>
+               </table>
+               #foreach( $key in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry").keySet())
+               <table cellpadding="0" cellspacing="0" border="0" width="100%" style="padding-bottom: 20px; padding-top: 0">
+                  <tr>
+                     <td>
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fff; padding: 20px 30px; border-bottom: 1px solid #eaeaea;">
+                           <tr>
+                              <td align="left" text-align="left" width="100%" style="display: inline-block; width: calc(100% - 54px)">
+                                 <h3 style="margin: 0; padding: 0;">$key.split("\|")[1]</h3>
+                              </td>
+                              <td align="right" text-align="right" style="display: inline-block; width: 38px; margin-left: 16px">
+                                 <a href="$newsItemByCategorizationWrapper.hostName/#/subscription?action=edit&code=$key.split("\|")[0]" style="font-weight: bold; color:#0065BD;text-decoration: none;">
+                                 EDIT
+                                 </a>
+                              </td>
+                           </tr>
+                        </table>
+                        #foreach( $newsItem in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry").get($key))
+                        <table class="newstable" cellspacing="0" cellpadding="0" border="0" width="100%"  style="background-color: #fff; padding: 0px 30px;">
+                           <tr>
+                              <td style="padding-top: 20px;padding-bottom: 20px;font-family:Arial">
+                                 <div style="float: left; width: 85%; padding-bottom: 10px;">
+                                    <a href="$newsItem.link" style="font-weight: bold;color:#0065BD;text-decoration: none;">$newsItem.title</a>
+                                 </div>
+                                 <div style="float:left; width:100%;font-size:12px; color:#a9a9a9;">
+                                    $newsItem.publicationDate #if( $newsItem.author) | $newsItem.author #end
+                                 </div>
+                                 #if( $newsItemByCategorizationWrapper.headlinesOnly.equals("N"))
+                                 <div style="float:left; width:100%;font-size:14px;margin-top:10px;line-height: 1.5em;">$newsItem.body ...<a style="font-size:13px;color: #3A8ED2; text-decoration: none; font-weight:bold;" href="$newsItem.link">read more </a></div>
+                                 #end
+                              </td>
+                           </tr>
+                        </table>
+                        #end
+                     </td>
+                  </tr>
+               </table>
+               #end
+               <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                  <tr>
+                     <td>
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%"  style="background-color: #fff; padding: 24px 0;">
+                           <tr>
+                              <td align="center" style="font-weight:bold; font-size: 16px;">
+                                 Want to subscribe to another industry?
+                              </td>
+                           </tr>
+                           <tr>
+                              <td align="center" style="padding-top:16px;">
+                                 <a style="font-weight:bold; display:inline-block; font-size: 14px; background-color: #0068B6; text-decoration: none; color: white; border: 14px solid  #0068B6;"
+                                    href="$newsItemByCategorizationWrapper.hostName/#/subscription?action=add">
+                                 Add a subscription
+                                 </a>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+               </table>
+               #end
+            </td>
+         </tr>
+         #if($newsItemByCategorizationWrapper.render.equals("Y") && $newsItemByCategorizationWrapper.topReadNews && $newsItemByCategorizationWrapper.topReadNews.size() !=0)
+         <tr>
+            <td style="padding-top: 10px;">
+               <hr style="color: #eaeaea!important;" />
+            </td>
+         </tr>
+         <tr>
+            <td style="padding-top:10px">
+               <table cellspacing="0" cellpadding="0" border="0" width="100%" >
+                  <tr>
+                     <td>
+                        <table cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #fff; padding: 20px 30px; border-bottom: 1px solid #eaeaea;">
+                           <tr>
+                              <td>
+                                 <h3 style="margin: 0; padding: 0;">Most read yesterday</h3>
+                              </td>
+                           </tr>
+                        </table>
+                        #foreach( $newsItem in $newsItemByCategorizationWrapper.topReadNews)
+                        <table class="newstable" cellspacing="0" cellpadding="0" border="0" width="100%"  style="background-color: #fff; padding: 0px 30px;">
+                           <tr>
+                              <td style="padding-top: 20px; padding-bottom: 20px;font-family:Arial">
+                                 <div style="float: left; width: 85%; padding-bottom: 10px;">
+                                    <a href="$newsItem.link" style="font-weight: bold;color:#0065BD;text-decoration: none;">$newsItem.title</a>
+                                 </div>
+                                 <div style="float:left; width:100%;font-size:12px; color:#a9a9a9;">$newsItem.publicationDate #if( $newsItem.author )| $newsItem.author #end</div>
+                                 #if( $newsItemByCategorizationWrapper.headlinesOnly.equals("N") && $newsItem.body)
+                                 <div style="float:left; width:100%;font-size:14px;margin-top:10px;line-height: 1.5em;">$newsItem.body...<a style="font-size:13px;color: #3A8ED2; text-decoration: none; font-weight:bold;" href="$newsItem.link">read more </a></div>
+                                 #end
+                              </td>
+                           </tr>
+                        </table>
+                        #end
+                     </td>
+                  </tr>
+               </table>
+            </td>
+         </tr>
+         #end
+         <tr>
+            <td colspan="2" style="padding-top:2em;padding-left:30px;">
+               <span style="color: #939393;font-size:12px;paddding-top:10px">To add or customize subscriptions, edit settings, or unsubscribe from the Morning Digest, please <a style="color: #3A8ED2; text-decoration: none; font-weight:bold;" href="$newsItemByCategorizationWrapper.hostName/#/subscription"  >visit the "Manage My News" page</a></span>
+            </td>
+         </tr>
+         <tr>
+            <td colspan="2" style="padding-top:2em;padding-left:30px;">
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>

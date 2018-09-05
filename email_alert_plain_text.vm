@@ -1,0 +1,46 @@
+Your Client News Morning Digest
+
+#foreach( $newsItem in $newsItemByCategorizationWrapper.topReadNews)
+#if( $newsItem.author ) $newsItem.author #end
+$newsItem.title
+$newsItem.publicationDate
+$newsItem.link
+#if( $newsItem.body ) $newsItem.body #end
+#end
+
+#if($newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company"))
+Good morning, $newsItemByCategorizationWrapper.userName! Here is your top company news for: $newsItemByCategorizationWrapper.date.
+#foreach( $key in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company").keySet())
+$key.split("\|")[1]
+EDIT: $newsItemByCategorizationWrapper.hostName/#/subscription?action=edit&code=$key.split("\|")[0]
+#foreach( $newsItem in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("company").get($key))
+#if( $newsItem.author ) $newsItem.author #end
+$newsItem.title
+$newsItem.publicationDate
+$newsItem.link
+$newsItem.body
+#end
+#end
+#end
+
+#if($newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry"))
+Good morning, $newsItemByCategorizationWrapper.userName! Here is your top industry news for: $newsItemByCategorizationWrapper.date.
+#foreach( $key in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry").keySet())
+$key.split("\|")[1]
+EDIT: $newsItemByCategorizationWrapper.hostName/#/subscription?action=edit&code=$key.split("\|")[0]
+#foreach( $newsItem in $newsItemByCategorizationWrapper.newsItemByCategorizationMap.get("industry").get($key))
+#if( $newsItem.author ) $newsItem.author #end
+$newsItem.title
+$newsItem.publicationDate
+$newsItem.link
+$newsItem.body
+#end
+#end
+#end
+
+Read more stories online in Client News
+$newsItemByCategorizationWrapper.hostName
+
+If you would like to add news or customize the subscriptions please $newsItemByCategorizationWrapper.hostName/#/subscription visit the "Manage My News" page
+
+If you do not want these emails or want to change the number of articles shown, please $newsItemByCategorizationWrapper.hostName/#/settings visit the "Settings" page
