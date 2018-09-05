@@ -35,3 +35,4 @@ Mongoose: abstracts away the MongoDB boilerplate for a simple Schema solution.
 16. CAP Theorem, Hibernate 5 tips (write up)
 17. Amazon Elastic Compute Cloud (Amazon EC2) : Docker container deployment [Manual] 
 18. Spring Cloud Config Server for Externalizing configurations [branch: spring-cloud-config]
+19. Apache Velocity [.vm templates for Rich Text E-Mails]
