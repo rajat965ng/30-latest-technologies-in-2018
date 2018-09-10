@@ -1,0 +1,20 @@
+Let’s begin by creating 2 replication of an nginx docker load balanced on Kubernetes.
+
+kubectl run test-nginx — image=nginx — replicas=2 — port=80 — expose — service-overrides=’{ “spec”: { “type”: “LoadBalancer” } }’
+
+If NO proxy is required, start the Minikube cluster [use kvm2 for linux and hyperkit for mac]:
+
+minikube start --vm-driver=hyperkit
+
+Open the Kubernetes dashboard in a browser:
+
+minikube dashboard
+
+Because this tutorial uses Minikube, instead of pushing your Docker image to a registry, you can simply build the image using the same Docker host as the Minikube VM, so that the images are automatically present. To do so, make sure you are using the Minikube Docker daemon:
+
+eval $(minikube docker-env)
+
+We can’t see their external IP, because it’s running in a minikube
+To Test we can find the ip by typing :
+
+minikube service test-nginx — url 
