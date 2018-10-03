@@ -37,3 +37,4 @@ Mongoose: abstracts away the MongoDB boilerplate for a simple Schema solution.
 18. Spring Cloud Config Server for Externalizing configurations [branch: spring-cloud-config]
 19. Apache Velocity [.vm templates for Rich Text E-Mails]
 20. Kubernetes Single node server [minikube]. Setup to spin container along with monitoring dashboards. 
+21. Kubernetes Cluster on AWS. Spin a docker container. Destroy cluster.
